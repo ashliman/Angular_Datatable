@@ -1,0 +1,7 @@
+/* You can add global styles to this file, and also import other style files */
+.row{
+    margin: 0px auto !important;
+}
+.pull-right{
+    float: right;
+}

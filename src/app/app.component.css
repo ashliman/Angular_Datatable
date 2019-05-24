@@ -1,0 +1,21 @@
+h3{
+    margin-top: 20px;
+    padding-left: 0px;
+}
+button{
+    margin: 5px;
+}
+.table_header_section{
+    margin-top: 30px !important;
+    margin-bottom: 0px !important;
+}
+input[type=checkbox]{
+    zoom: 1.5;
+}
+.custom_input_group .input-group-text{
+    background-color:#fff;
+    border: 1px solid #fff;
+}
+li .active{
+    background-color: #ddd;
+}

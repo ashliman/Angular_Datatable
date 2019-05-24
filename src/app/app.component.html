@@ -1,0 +1,74 @@
+
+<h3 class="col-sm-8 offset-sm-2">Custom datatable</h3>
+<div class="row table_header_section">
+  <input type="text" [(ngModel)]="searchText" class="col-sm-3 form-control offset-sm-2" placeholder="Search Now"/>
+  <div class="col-sm-5"> 
+    <button class="btn btn-success pull-right" (click)="showAddForm()"><i class="fa fa-plus"></i></button>
+    <button class="btn btn-danger pull-right" (click)="deleteRows()"><i class="fa fa-trash"></i></button>
+    <button class="btn btn-info pull-right" (click)="resetData()"><i class="fa fa-refresh"></i></button>
+  </div>
+</div>
+  <br><br>
+ 
+  <div class="col-sm-8 offset-sm-2">
+  <table class="table">
+    <tr>
+      <th><input type="checkbox" (change)="selectAll($event);"/></th>
+      <th>Employee Id <span class="fa fa-long-arrow-up" (click)="sort('id','ascending')"></span> <span class="fa fa-long-arrow-down" (click)="sort('id','descending')"></span></th>
+      <th>Employee name <span class="fa fa-long-arrow-up" (click)="sort('employee_name','ascending')"></span> <span class="fa fa-long-arrow-down" (click)="sort('employee_name','descending')"></span></th>
+      <th>Employee salary <span class="fa fa-long-arrow-up" (click)="sort('employee_salary','ascending')"></span> <span class="fa fa-long-arrow-down" (click)="sort('employee_salary','descending')"></span></th>
+      <th>Employee age <span class="fa fa-long-arrow-up" (click)="sort('employee_age','ascending')"></span> <span class="fa fa-long-arrow-down" (click)="sort('employee_age','descending')"></span></th>
+      <th>Action</th>
+    </tr>
+    <ng-container *ngIf="showAddFormFlag"> 
+    <tr *ngFor="let newEmp of newEmployee" >
+      <td></td>
+      <td></td>
+      <td><input class="form-control" type="text" value="{{newEmp.employee_name}}" [(ngModel)]="newEmp.employee_name"></td>
+      <td><input class="form-control" type="text" value="{{newEmp.employee_salary}}" [(ngModel)]="newEmp.employee_salary"></td>
+      <td><input class="form-control" type="text" value="{{newEmp.employee_age}}" [(ngModel)]="newEmp.employee_age"></td>
+      <td><button class="btn btn-info" (click)="addEmployee(newEmp)"><i class="fa fa-plus"></i></button> </td>
+    </tr>
+  </ng-container>
+    <tr *ngFor="let emp of employeeTable | searchFilter:searchText | slice:startNum:endNum">
+      <td><input type="checkbox" (click)="selectedEmployee(emp)" #selectEmployee></td>
+      <td>{{emp.id}}</td>
+      <td><span *ngIf="!emp.isEdit">{{emp.employee_name}}</span> <input class="form-control" type="text" value="{{emp.employee_name}}" [(ngModel)]="emp.employee_name" *ngIf="emp.isEdit"></td>
+      <td><span *ngIf="!emp.isEdit">{{emp.employee_salary | number:'4.0-5' }}</span>  <input class="form-control" type="text" value="{{emp.employee_salary}}" [(ngModel)]="emp.employee_salary" *ngIf="emp.isEdit"></td>
+      <td><span *ngIf="!emp.isEdit">{{emp.employee_age}}</span>  <input class="form-control" type="text" value="{{emp.employee_age}}" [(ngModel)]="emp.employee_age" *ngIf="emp.isEdit"></td>
+      <td><button class="btn btn-success" (click)="editEmployee(emp)"><i class="fa fa-pencil"></i></button> </td>
+    </tr>
+  </table>
+</div>
+
+
+<div class="col-sm-8 offset-sm-2">
+  <div class="row">
+  <div class="col-sm-3">
+      <div class="input-group mb-3 custom_input_group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Show</span>
+        </div>
+        <select class="form-control" [(ngModel)]="showPage" (change)="setPages($event)">
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+        </select>
+        <div class="input-group-append">
+          <span class="input-group-text">entries</span>
+        </div>
+      </div>
+  </div>
+  <div class="col-sm-9">
+  <nav aria-label="Page navigation example" *ngIf="employeeTable">
+    <ul class="pagination pull-right">
+      <li class="page-item" *ngIf="startNum>0"><a class="page-link" href="#" (click)="prevRecords(startNum)">Previous</a></li>
+      <li class="page-item" *ngFor="let emp of employeeTable;let i=index">
+        <a  [ngClass]="{'active':currentPage==i+1}" *ngIf="totalPages > showPage+i+1" (click)="showCurrentPages(i+1)" class="page-link" href="#">{{i+1}}</a>
+      </li>
+      <li class="page-item" *ngIf="endNum < totalPages"><a class="page-link" href="#" (click)="nextRecords(endNum)">Next</a></li>
+    </ul>
+  </nav>
+</div>
+</div>
+</div>
